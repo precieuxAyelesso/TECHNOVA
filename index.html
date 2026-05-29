@@ -2,9 +2,9 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Mots Mêlés Pro</title>
     <!-- Google Fonts: Outfit for premium modern feel -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -67,35 +67,35 @@
                 <div class="diff-card" data-diff="0">
                     <div class="diff-info">
                         <h3>Très Facile</h3>
-                        <p>Grille 6x6 • Mots courts • Horizontal/Vertical</p>
+                        <p>Grille 8x8 • Mots courts • Horizontal/Vertical</p>
                     </div>
                     <span class="diff-badge badge-tf">Débutant</span>
                 </div>
                 <div class="diff-card" data-diff="1">
                     <div class="diff-info">
                         <h3>Facile</h3>
-                        <p>Grille 8x8 • Plus de mots • Alignements classiques</p>
+                        <p>Grille 10x10 • Plus de mots • Alignements classiques</p>
                     </div>
                     <span class="diff-badge badge-f">Standard</span>
                 </div>
                 <div class="diff-card" data-diff="2">
                     <div class="diff-info">
                         <h3>Moyen</h3>
-                        <p>Grille 10x10 • Avec Diagonales • Défi sympa</p>
+                        <p>Grille 12x12 • Avec Diagonales • Défi sympa</p>
                     </div>
                     <span class="diff-badge badge-m">Intermédiaire</span>
                 </div>
                 <div class="diff-card" data-diff="3">
                     <div class="diff-info">
                         <h3>Difficile</h3>
-                        <p>Grille 12x12 • Mots à l'envers • Diagonales inverses</p>
+                        <p>Grille 14x14 • Mots à l'envers • Diagonales inverses</p>
                     </div>
                     <span class="diff-badge badge-d">Expert</span>
                 </div>
                 <div class="diff-card" data-diff="4">
                     <div class="diff-info">
                         <h3>Expert</h3>
-                        <p>Grille 14x14 • Temps limité • Mots croisés cachés</p>
+                        <p>Grille 16x16 • Temps limité • Mots croisés cachés</p>
                     </div>
                     <span class="diff-badge badge-e">Légende</span>
                 </div>
@@ -175,9 +175,12 @@
                 <div class="setting-item">
                     <div class="setting-text">
                         <h3>Langue du dictionnaire</h3>
-                        <p>Actuellement uniquement en Français</p>
+                        <p>Choix de la langue des mots à trouver</p>
                     </div>
-                    <span class="setting-value">Français 🇫🇷</span>
+                    <select id="select-lang" class="custom-select">
+                        <option value="fr">Français 🇫🇷</option>
+                        <option value="en">English 🇬🇧</option>
+                    </select>
                 </div>
                 <div class="setting-item">
                     <div class="setting-text">
