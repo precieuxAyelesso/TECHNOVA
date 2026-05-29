@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> -->
+    <title>Mots Mêlés Pro</title>
+    <!-- Google Fonts: Outfit for premium modern feel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- BACKGROUND DYNAMIC GLOWS -->
+        <div class="glow-bg glow-1"></div>
+        <div class="glow-bg glow-2"></div>
+
+        <!-- 1. MAIN MENU SCREEN -->
+        <div id="screen-menu" class="screen active">
+            <header class="menu-header">
+                <div class="logo-container">
+                    <span class="logo-icon">🔠</span>
+                    <h1>MOTS MÊLÉS</h1>
+                    <p class="subtitle">Premium Edition</p>
+                </div>
+            </header>
+
+            <main class="menu-main">
+                <div class="quick-stats">
+                    <div class="stat-card">
+                        <span class="stat-num" id="stat-wins">0</span>
+                        <span class="stat-label">Victoires</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num" id="stat-score">0</span>
+                        <span class="stat-label">Score</span>
+                    </div>
+                </div>
+
+                <button id="btn-play-quick" class="btn btn-primary btn-glow pulse">Jouer Immédiatement</button>
+                <button id="btn-select-category" class="btn btn-secondary">Choisir une Catégorie</button>
+                <button id="btn-settings-toggle" class="btn btn-tertiary">⚙️ Options</button>
+            </main>
+        </div>
+
+        <!-- 2. CATEGORY SELECT SCREEN -->
+        <div id="screen-categories" class="screen">
+            <header class="screen-header">
+                <button class="btn-back" onclick="showScreen('screen-menu')">←</button>
+                <h2>Catégories</h2>
+            </header>
+            <main class="categories-grid" id="categories-container">
+                <!-- Dynamically populated from script.js -->
+            </main>
+        </div>
+
+        <!-- 3. DIFFICULTY SELECT SCREEN -->
+        <div id="screen-difficulty" class="screen">
+            <header class="screen-header">
+                <button class="btn-back" id="btn-back-difficulty">←</button>
+                <h2>Difficulté</h2>
+            </header>
+            <main class="difficulty-list">
+                <div class="diff-card" data-diff="0">
+                    <div class="diff-info">
+                        <h3>Très Facile</h3>
+                        <p>Grille 6x6 • Mots courts • Horizontal/Vertical</p>
+                    </div>
+                    <span class="diff-badge badge-tf">Débutant</span>
+                </div>
+                <div class="diff-card" data-diff="1">
+                    <div class="diff-info">
+                        <h3>Facile</h3>
+                        <p>Grille 8x8 • Plus de mots • Alignements classiques</p>
+                    </div>
+                    <span class="diff-badge badge-f">Standard</span>
+                </div>
+                <div class="diff-card" data-diff="2">
+                    <div class="diff-info">
+                        <h3>Moyen</h3>
+                        <p>Grille 10x10 • Avec Diagonales • Défi sympa</p>
+                    </div>
+                    <span class="diff-badge badge-m">Intermédiaire</span>
+                </div>
+                <div class="diff-card" data-diff="3">
+                    <div class="diff-info">
+                        <h3>Difficile</h3>
+                        <p>Grille 12x12 • Mots à l'envers • Diagonales inverses</p>
+                    </div>
+                    <span class="diff-badge badge-d">Expert</span>
+                </div>
+                <div class="diff-card" data-diff="4">
+                    <div class="diff-info">
+                        <h3>Expert</h3>
+                        <p>Grille 14x14 • Temps limité • Mots croisés cachés</p>
+                    </div>
+                    <span class="diff-badge badge-e">Légende</span>
+                </div>
+            </main>
+        </div>
+
+        <!-- 4. GAME PLAYPLAY SCREEN -->
+        <div id="screen-game" class="screen">
+            <header class="game-header">
+                <div class="game-meta-left">
+                    <button class="btn-home" onclick="showScreen('screen-menu')">🏠</button>
+                    <div>
+                        <span id="game-category-title" class="badge-category">Catégorie</span>
+                        <div class="difficulty-indicator" id="game-difficulty-text">Niveau</div>
+                    </div>
+                </div>
+                <div class="game-meta-right">
+                    <div class="timer-container" id="timer-box">
+                        <span class="icon">⏱️</span>
+                        <span id="game-timer">00:00</span>
+                    </div>
+                    <div class="score-container">
+                        <span class="icon">✨</span>
+                        <span id="game-score">0</span>
+                    </div>
+                </div>
+            </header>
+
+            <main class="game-main">
+                <!-- GRID CANVAS OVERLAY FOR SWIPE LINE DRAWING -->
+                <div class="grid-wrapper">
+                    <canvas id="swipe-canvas" class="swipe-canvas"></canvas>
+                    <div id="grid-board" class="grid-board">
+                        <!-- Dynamically filled with letters -->
+                    </div>
+                </div>
+
+                <div class="word-list-section">
+                    <div class="word-list-header">
+                        <span>Trouvez ces mots (<span id="words-found-count">0</span>/<span id="words-total-count">0</span>)</span>
+                        <button id="btn-hint" class="btn-hint">💡 Indice</button>
+                    </div>
+                    <div id="word-list-container" class="word-list-container">
+                        <!-- Dynamically filled with words -->
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- 5. SETTINGS SCREEN -->
+        <div id="screen-settings" class="screen">
+            <header class="screen-header">
+                <button class="btn-back" onclick="showScreen('screen-menu')">←</button>
+                <h2>Options & Réglages</h2>
+            </header>
+            <main class="settings-main">
+                <div class="setting-item">
+                    <div class="setting-text">
+                        <h3>Effets Sonores</h3>
+                        <p>Sons de sélection et victoire synthétisés</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="switch-sound" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-text">
+                        <h3>Vibrations</h3>
+                        <p>Retour tactile lors des sélections (si supporté)</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="switch-vibrate" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-text">
+                        <h3>Langue du dictionnaire</h3>
+                        <p>Actuellement uniquement en Français</p>
+                    </div>
+                    <span class="setting-value">Français 🇫🇷</span>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-text">
+                        <h3>Publicité Intégrée</h3>
+                        <p>Status de la passerelle native</p>
+                    </div>
+                    <span class="setting-value status-ad" id="admob-status">Détectée (Test)</span>
+                </div>
+            </main>
+        </div>
+
+        <!-- VICTORY MODAL OVERLAY -->
+        <div id="modal-victory" class="modal-overlay">
+            <div class="modal-content scale-up">
+                <div class="modal-header">
+                    <span class="medal-icon">🏆</span>
+                    <h2>Niveau Réussi !</h2>
+                </div>
+                <div class="modal-body">
+                    <p class="congrats-text">Excellent travail ! Vous avez trouvé tous les mots cachés.</p>
+                    <div class="victory-stats">
+                        <div class="v-stat">
+                            <span class="v-val" id="vic-time">01:45</span>
+                            <span class="v-lbl">Temps</span>
+                        </div>
+                        <div class="v-stat">
+                            <span class="v-val" id="vic-score">+250</span>
+                            <span class="v-lbl">Points</span>
+                        </div>
+                        <div class="v-stat">
+                            <span class="v-val" id="vic-difficulty">Moyen</span>
+                            <span class="v-lbl">Difficulté</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn-next-level" class="btn btn-primary btn-glow">Niveau Suivant</button>
+                    <button onclick="hideVictoryModal(); showScreen('screen-menu');" class="btn btn-secondary">Menu Principal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Web Audio & Confetti helper libraries logic inside script.js -->
+    <script src="script.js"></script>
+</body>
+</html>
