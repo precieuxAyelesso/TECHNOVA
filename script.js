@@ -1,7 +1,7 @@
 /* ==========================================================================
    GAME CONFIGURATION & DICTIONARIES
    ========================================================================== */
-const WORD_DICT = {
+const WORD_DICT_FR = {
     "Animaux": ["LION", "TIGRE", "CHIEN", "CHAT", "ELEPHANT", "GIRAFE", "SINGE", "DAUPHIN", "REQUIN", "OISEAU", "SERPENT", "TORTUE", "LAPIN", "RENARD", "CHEVAL", "VACHE", "MOUTON", "PANDA", "OURS", "HIBOU"],
     "Pays & Villes": ["FRANCE", "CANADA", "BRESIL", "JAPON", "ITALIE", "ESPAGNE", "MAROC", "EGYPTE", "CHINE", "INDE", "SUISSE", "BELGIQUE", "SENEGAL", "MEXIQUE", "RUSSIE", "PARIS", "LONDRES", "TOKYO", "ROME"],
     "Nourriture": ["PIZZA", "PASTA", "CREPE", "POMME", "BANANE", "CHOCOLAT", "FROMAGE", "SALADE", "SOUPE", "GATEAU", "FRITES", "ORANGE", "PAIN", "BURGER", "CAFE", "POULET", "RIZ", "SUSHI", "BISCUIT"],
@@ -10,33 +10,42 @@ const WORD_DICT = {
     "Nature & Espace": ["FORET", "FLEUVE", "MONTAGNE", "DESERT", "PLANETE", "SOLEIL", "ETOILE", "NUAGE", "PLUIE", "FLEUR", "ARBRE", "OCEAN", "VOLCAN", "ECLAIR", "RIVIERE", "TERRE", "LUNE", "GALAXIE"]
 };
 
-// 5 Difficulty levels configuration
+const WORD_DICT_EN = {
+    "Animals": ["LION", "TIGER", "DOG", "CAT", "ELEPHANT", "GIRAFFE", "MONKEY", "DOLPHIN", "SHARK", "BIRD", "SNAKE", "TURTLE", "RABBIT", "FOX", "HORSE", "COW", "SHEEP", "PANDA", "BEAR", "OWL"],
+    "Countries & Cities": ["FRANCE", "CANADA", "BRAZIL", "JAPAN", "ITALY", "SPAIN", "MOROCCO", "EGYPT", "CHINA", "INDIA", "SWITZERLAND", "BELGIUM", "SENEGAL", "MEXICO", "RUSSIA", "PARIS", "LONDON", "TOKYO", "ROME"],
+    "Food": ["PIZZA", "PASTA", "COOKIE", "APPLE", "BANANA", "CHOCOLATE", "CHEESE", "SALAD", "SOUP", "CAKE", "FRIES", "ORANGE", "BREAD", "BURGER", "COFFEE", "CHICKEN", "RICE", "SUSHI", "BISCUIT"],
+    "Jobs": ["DOCTOR", "LAWYER", "PILOT", "FIREMAN", "POLICE", "BAKER", "TEACHER", "ARTISTE", "ACTOR", "DENTIST", "JUDGE", "HAIRDRESSER", "CHEF", "SINGER", "WRITER", "PHYSICIAN"],
+    "Technology": ["INTERNET", "COMPUTER", "MOBILE", "SCREEN", "KEYBOARD", "MOUSE", "ROBOT", "CODE", "NETWORK", "DATA", "CLOUD", "WEBSITE", "APPLICATION", "SOFTWARE", "CONSOLE", "PIXEL", "FILE"],
+    "Nature & Space": ["FOREST", "RIVER", "MOUNTAIN", "DESERT", "PLANET", "SUN", "STAR", "CLOUD", "RAIN", "FLOWER", "TREE", "OCEAN", "VOLCANO", "LIGHTNING", "STREAM", "EARTH", "MOON", "GALAXY"]
+};
+
+// 5 Difficulty levels configuration (UPDATED TO LARGER GRIDS: 8x8 to 16x16)
 const DIFFICULTY_LEVELS = [
     {
         name: "Très Facile",
-        size: 6,
-        wordCount: 5,
+        size: 8,
+        wordCount: 6,
         directions: [[0, 1], [1, 0]], // Right, Down
         badgeClass: "badge-tf"
     },
     {
         name: "Facile",
-        size: 8,
-        wordCount: 7,
+        size: 10,
+        wordCount: 8,
         directions: [[0, 1], [1, 0]], // Right, Down
         badgeClass: "badge-f"
     },
     {
         name: "Moyen",
-        size: 10,
-        wordCount: 8,
+        size: 12,
+        wordCount: 9,
         directions: [[0, 1], [1, 0], [1, 1], [-1, 1]], // Right, Down, Diagonal Down-Right, Diagonal Up-Right
         badgeClass: "badge-m"
     },
     {
         name: "Difficile",
-        size: 12,
-        wordCount: 10,
+        size: 14,
+        wordCount: 11,
         directions: [
             [0, 1], [1, 0], [1, 1], [-1, 1], // Forward: R, D, DR, UR
             [0, -1], [-1, 0], [-1, -1], [1, -1] // Backward: L, U, UL, DL
@@ -45,13 +54,13 @@ const DIFFICULTY_LEVELS = [
     },
     {
         name: "Expert",
-        size: 14,
-        wordCount: 12,
+        size: 16,
+        wordCount: 13,
         directions: [
             [0, 1], [1, 0], [1, 1], [-1, 1],
             [0, -1], [-1, 0], [-1, -1], [1, -1]
         ],
-        timer: 180, // 3 minutes limit
+        timer: 240, // 4 minutes limit for 16x16 grid
         badgeClass: "badge-e"
     }
 ];
@@ -62,12 +71,13 @@ const FILL_LETTERS = "EEEEEEAAAAAIIIIIOOOOOSSSSSTTTTTNNNNNRRRRRUUUUULLLLDDDDGGGM
 /* ==========================================================================
    GAME STATE VARIABLES
    ========================================================================== */
+let currentLanguage = "fr";
 let currentCategory = "Animaux";
 let currentDiffIndex = 2; // Default to Medium
 let currentLevel = {
     grid: [],
     words: [], // { text: "WORD", found: false, cells: [{r, c}, ...] }
-    size: 10,
+    size: 12,
     directions: []
 };
 
@@ -102,6 +112,11 @@ document.addEventListener("DOMContentLoaded", () => {
     checkAndroidAdMobStatus();
 });
 
+// Dictionary helper
+function getActiveDict() {
+    return currentLanguage === "fr" ? WORD_DICT_FR : WORD_DICT_EN;
+}
+
 // Load persistent stats
 function loadUserProfile() {
     const savedWins = localStorage.getItem("mm_wins");
@@ -111,6 +126,22 @@ function loadUserProfile() {
     
     document.getElementById("stat-wins").innerText = userStats.wins;
     document.getElementById("stat-score").innerText = userStats.score;
+
+    // Load active language
+    const savedLang = localStorage.getItem("mm_lang");
+    if (savedLang !== null) {
+        currentLanguage = savedLang;
+    } else {
+        currentLanguage = "fr";
+    }
+
+    const dict = getActiveDict();
+    currentCategory = Object.keys(dict)[0]; // Set default category matching dictionary language
+
+    const langSelect = document.getElementById("select-lang");
+    if (langSelect) langSelect.value = currentLanguage;
+
+    updateUILanguage();
 }
 
 function saveUserProfile() {
@@ -133,7 +164,7 @@ function checkAndroidAdMobStatus() {
 }
 
 /* ==========================================================================
-   NAVIGATION
+   NAVIGATION & TRANSLATIONS
    ========================================================================== */
 function showScreen(screenId) {
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
@@ -143,26 +174,137 @@ function showScreen(screenId) {
     }
 }
 
+function changeLanguage(lang) {
+    currentLanguage = lang;
+    localStorage.setItem("mm_lang", lang);
+    
+    const dict = getActiveDict();
+    // Default to the first category of the new active language dictionary
+    currentCategory = Object.keys(dict)[0];
+    
+    updateUILanguage();
+    populateCategoryScreen();
+    
+    showToast(lang === "fr" ? "Dictionnaire Français activé" : "English dictionary enabled");
+}
+
+function updateUILanguage() {
+    const isFR = currentLanguage === "fr";
+    
+    // Titles & Subtitles
+    document.querySelector(".logo-container h1").innerText = isFR ? "MOTS MÊLÉS" : "WORD SEARCH";
+    document.querySelector(".logo-container p.subtitle").innerText = isFR ? "Edition Premium" : "Premium Edition";
+    
+    // Menu buttons
+    document.getElementById("btn-play-quick").innerText = isFR ? "Jouer Immédiatement" : "Quick Play";
+    document.getElementById("btn-select-category").innerText = isFR ? "Choisir une Catégorie" : "Select Category";
+    document.getElementById("btn-settings-toggle").innerText = isFR ? "⚙️ Options" : "⚙️ Settings";
+    
+    // Quick stats labels
+    document.querySelectorAll(".stat-label")[0].innerText = isFR ? "Victoires" : "Wins";
+    document.querySelectorAll(".stat-label")[1].innerText = isFR ? "Score" : "Score";
+    
+    // Screen Headers
+    document.querySelector("#screen-categories h2").innerText = isFR ? "Catégories" : "Categories";
+    document.querySelector("#screen-difficulty h2").innerText = isFR ? "Difficulté" : "Difficulty";
+    document.querySelector("#screen-settings h2").innerText = isFR ? "Options & Réglages" : "Settings & Options";
+    
+    // Difficulty labels inside difficulty selection
+    const diffCards = document.querySelectorAll(".diff-card");
+    const diffTexts = [
+        {
+            name: isFR ? "Très Facile" : "Very Easy",
+            sub: isFR ? "Grille 8x8 • Mots courts • Horizontal/Vertical" : "8x8 Grid • Short words • Horizontal/Vertical",
+            badge: isFR ? "Débutant" : "Beginner"
+        },
+        {
+            name: isFR ? "Facile" : "Easy",
+            sub: isFR ? "Grille 10x10 • Plus de mots • Alignements classiques" : "10x10 Grid • More words • Classical alignments",
+            badge: isFR ? "Standard" : "Standard"
+        },
+        {
+            name: isFR ? "Moyen" : "Medium",
+            sub: isFR ? "Grille 12x12 • Avec Diagonales • Défi sympa" : "12x12 Grid • With Diagonals • Fun challenge",
+            badge: isFR ? "Intermédiaire" : "Intermediate"
+        },
+        {
+            name: isFR ? "Difficile" : "Hard",
+            sub: isFR ? "Grille 14x14 • Mots à l'envers • Diagonales inverses" : "14x14 Grid • Reversed words • Inverse diagonals",
+            badge: isFR ? "Expert" : "Expert"
+        },
+        {
+            name: isFR ? "Expert" : "Expert",
+            sub: isFR ? "Grille 16x16 • Temps limité • Mots croisés cachés" : "16x16 Grid • Limited time • Intersecting hidden words",
+            badge: isFR ? "Légende" : "Legend"
+        }
+    ];
+    
+    diffCards.forEach((card, idx) => {
+        const info = diffTexts[idx];
+        card.querySelector("h3").innerText = info.name;
+        card.querySelector("p").innerText = info.sub;
+        card.querySelector(".diff-badge").innerText = info.badge;
+    });
+    
+    // Gameplay elements
+    document.querySelector(".word-list-header span").innerHTML = isFR ? 
+        `Trouvez ces mots (<span id="words-found-count">0</span>/<span id="words-total-count">0</span>)` : 
+        `Find these words (<span id="words-found-count">0</span>/<span id="words-total-count">0</span>)`;
+    document.getElementById("btn-hint").innerText = isFR ? "💡 Indice" : "💡 Hint";
+    
+    // Settings Screen elements labels
+    const settingItems = document.querySelectorAll(".setting-item");
+    
+    // Sound item
+    settingItems[0].querySelector("h3").innerText = isFR ? "Effets Sonores" : "Sound Effects";
+    settingItems[0].querySelector("p").innerText = isFR ? "Sons de sélection et victoire synthétisés" : "Synthesized sound effects";
+    
+    // Vibration item
+    settingItems[1].querySelector("h3").innerText = isFR ? "Vibrations" : "Haptic Vibrations";
+    settingItems[1].querySelector("p").innerText = isFR ? "Retour tactile lors des sélections (si supporté)" : "Tactile haptic swipe response";
+    
+    // Language item
+    settingItems[2].querySelector("h3").innerText = isFR ? "Langue du dictionnaire" : "Word Dictionary";
+    settingItems[2].querySelector("p").innerText = isFR ? "Choix de la langue des mots à trouver" : "Language of hidden words";
+    
+    // Ads status item
+    settingItems[3].querySelector("h3").innerText = isFR ? "Publicité Intégrée" : "Integrated Ads";
+    settingItems[3].querySelector("p").innerText = isFR ? "Status de la passerelle native" : "Native bridge status";
+    
+    // Victory Modal translation elements
+    document.querySelector("#modal-victory h2").innerText = isFR ? "Niveau Réussi !" : "Level Cleared!";
+    document.querySelector(".congrats-text").innerText = isFR ? 
+        "Excellent travail ! Vous avez trouvé tous les mots cachés." : 
+        "Excellent work! You found all the hidden words.";
+    
+    document.querySelectorAll(".v-lbl")[0].innerText = isFR ? "Temps" : "Time";
+    document.querySelectorAll(".v-lbl")[1].innerText = isFR ? "Points" : "Score";
+    document.querySelectorAll(".v-lbl")[2].innerText = isFR ? "Difficulté" : "Difficulty";
+    
+    document.getElementById("btn-next-level").innerText = isFR ? "Niveau Suivant" : "Next Level";
+    document.querySelector("#modal-victory button.btn-secondary").innerText = isFR ? "Menu Principal" : "Main Menu";
+}
+
 function populateCategoryScreen() {
     const container = document.getElementById("categories-container");
     container.innerHTML = "";
     
     const emojis = {
-        "Animaux": "🦁",
-        "Pays & Villes": "🌍",
-        "Nourriture": "🍕",
-        "Métiers": "👨‍🚒",
-        "Technologie": "💻",
-        "Nature & Espace": "🌲"
+        // French keys
+        "Animaux": "🦁", "Pays & Villes": "🌍", "Nourriture": "🍕", "Métiers": "👨‍🚒", "Technologie": "💻", "Nature & Espace": "🌲",
+        // English keys
+        "Animals": "🦁", "Countries & Cities": "🌍", "Food": "🍕", "Jobs": "👨‍🚒", "Technology": "💻", "Nature & Space": "🌲"
     };
 
-    Object.keys(WORD_DICT).forEach(catName => {
+    const dict = getActiveDict();
+
+    Object.keys(dict).forEach(catName => {
         const card = document.createElement("div");
         card.className = "category-card";
         card.innerHTML = `
             <span class="cat-emoji">${emojis[catName] || "🏷️"}</span>
             <span class="cat-name">${catName}</span>
-            <span class="cat-count">${WORD_DICT[catName].length} mots</span>
+            <span class="cat-count">${dict[catName].length} ${currentLanguage === 'fr' ? 'mots' : 'words'}</span>
         `;
         card.addEventListener("click", () => {
             currentCategory = catName;
@@ -175,7 +317,8 @@ function populateCategoryScreen() {
 function setupEventListeners() {
     // Menu Buttons
     document.getElementById("btn-play-quick").addEventListener("click", () => {
-        currentCategory = Object.keys(WORD_DICT)[Math.floor(Math.random() * Object.keys(WORD_DICT).length)];
+        const dict = getActiveDict();
+        currentCategory = Object.keys(dict)[Math.floor(Math.random() * Object.keys(dict).length)];
         currentDiffIndex = 1; // Easy default for quick play
         startGame();
     });
@@ -222,6 +365,14 @@ function setupEventListeners() {
     vibrateSwitch.addEventListener("change", () => {
         vibrationEnabled = vibrateSwitch.checked;
     });
+
+    // Language Select Dropdown
+    const langSelect = document.getElementById("select-lang");
+    if (langSelect) {
+        langSelect.addEventListener("change", () => {
+            changeLanguage(langSelect.value);
+        });
+    }
 
     // Grid Touch/Mouse Events
     const board = document.getElementById("grid-board");
@@ -403,15 +554,16 @@ function startGame() {
     currentLevel.words = [];
     timeSpent = 0;
     
+    const dict = getActiveDict();
     // Select category words and sanitize (remove accents, capitalize)
-    let availableWords = [...WORD_DICT[currentCategory]];
+    let availableWords = [...dict[currentCategory]];
     // Shuffle available words
     availableWords.sort(() => 0.5 - Math.random());
     
     // Filter by word size appropriate for grid
     const maxWordSize = currentLevel.size;
     availableWords = availableWords
-        .map(w => sanitizeFrenchWord(w))
+        .map(w => sanitizeWord(w))
         .filter(w => w.length <= maxWordSize);
 
     // Initialize blank grid
@@ -493,7 +645,7 @@ function startGame() {
     }
 }
 
-function sanitizeFrenchWord(word) {
+function sanitizeWord(word) {
     return word.normalize("NFD")
                .replace(/[\u0300-\u036f]/g, "") // remove accents
                .toUpperCase()
