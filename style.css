@@ -25,13 +25,6 @@
     --font-main: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    
-    /* Responsive Font Scaling */
-    --scale-factor: 1;
-    --base-font-size: 16px;
-    --h1-size: 38px;
-    --h2-size: 26px;
-    --h3-size: 18px;
 }
 
 /* ==========================================================================
@@ -57,7 +50,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px;
 }
 
 /* App Container - Constrained for Mobile/Tablet feel on Desktop */
@@ -73,7 +65,6 @@ body {
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
     display: flex;
     flex-direction: column;
-    font-size: calc(16px * var(--scale-factor));
 }
 
 @media (min-width: 481px) {
@@ -122,9 +113,9 @@ body {
     z-index: 1;
     transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.1, 0.76, 0.55, 0.94);
     transform: translateY(20px) scale(0.98);
-    padding: calc(16px * var(--scale-factor)) calc(16px * var(--scale-factor));
-    padding-top: calc((16px * var(--scale-factor)) + env(safe-area-inset-top));
-    padding-bottom: calc((16px * var(--scale-factor)) + env(safe-area-inset-bottom));
+    padding: 24px 20px;
+    padding-top: calc(24px + env(safe-area-inset-top));
+    padding-bottom: calc(24px + env(safe-area-inset-bottom));
 }
 
 .screen.active {
@@ -144,7 +135,7 @@ body {
 }
 
 .screen-header h2 {
-    font-size: calc(var(--h2-size) * var(--scale-factor));
+    font-size: 26px;
     font-weight: 800;
     letter-spacing: -0.5px;
     background: linear-gradient(to right, #ffffff, var(--text-secondary));
@@ -182,7 +173,7 @@ body {
 
 .menu-header {
     text-align: center;
-    margin-top: calc(32px * var(--scale-factor));
+    margin-top: 40px;
     z-index: 2;
 }
 
@@ -193,14 +184,14 @@ body {
 }
 
 .logo-icon {
-    font-size: calc(48px * var(--scale-factor));
-    margin-bottom: calc(10px * var(--scale-factor));
+    font-size: 60px;
+    margin-bottom: 12px;
     filter: drop-shadow(0 0 15px var(--color-primary-glow));
     animation: float 4s ease-in-out infinite;
 }
 
 .logo-container h1 {
-    font-size: calc(var(--h1-size) * var(--scale-factor));
+    font-size: 38px;
     font-weight: 800;
     letter-spacing: 2px;
     background: linear-gradient(135deg, #ffffff 30%, var(--color-primary) 100%);
@@ -210,20 +201,20 @@ body {
 }
 
 .subtitle {
-    font-size: calc(12px * var(--scale-factor));
+    font-size: 14px;
     letter-spacing: 4px;
     color: var(--color-secondary);
     font-weight: 600;
     text-transform: uppercase;
-    margin-top: calc(4px * var(--scale-factor));
+    margin-top: 4px;
 }
 
 .menu-main {
     display: flex;
     flex-direction: column;
-    gap: calc(12px * var(--scale-factor));
+    gap: 16px;
     width: 100%;
-    margin-bottom: calc(32px * var(--scale-factor));
+    margin-bottom: 40px;
     z-index: 2;
 }
 
@@ -240,7 +231,7 @@ body {
     border: 1px solid var(--glass-border);
     backdrop-filter: blur(10px);
     border-radius: 20px;
-    padding: calc(12px * var(--scale-factor));
+    padding: 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -252,18 +243,18 @@ body {
 }
 
 .stat-num {
-    font-size: calc(24px * var(--scale-factor));
+    font-size: 28px;
     font-weight: 800;
     color: var(--color-secondary);
     text-shadow: 0 0 10px var(--color-secondary-glow);
 }
 
 .stat-label {
-    font-size: calc(11px * var(--scale-factor));
+    font-size: 12px;
     color: var(--text-secondary);
     text-transform: uppercase;
     font-weight: 600;
-    margin-top: calc(4px * var(--scale-factor));
+    margin-top: 4px;
 }
 
 /* ==========================================================================
@@ -271,10 +262,10 @@ body {
    ========================================================================== */
 .btn {
     width: 100%;
-    padding: calc(12px * var(--scale-factor)) calc(16px * var(--scale-factor));
+    padding: 16px 24px;
     border-radius: 16px;
     font-family: var(--font-main);
-    font-size: calc(14px * var(--scale-factor));
+    font-size: 16px;
     font-weight: 700;
     cursor: pointer;
     display: flex;
@@ -356,21 +347,21 @@ body {
 }
 
 .cat-emoji {
-    font-size: calc(28px * var(--scale-factor));
-    margin-bottom: calc(8px * var(--scale-factor));
+    font-size: 32px;
+    margin-bottom: 10px;
     filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
 }
 
 .cat-name {
     font-weight: 700;
-    font-size: calc(14px * var(--scale-factor));
+    font-size: 15px;
     color: var(--text-primary);
 }
 
 .cat-count {
-    font-size: calc(10px * var(--scale-factor));
+    font-size: 11px;
     color: var(--text-secondary);
-    margin-top: calc(4px * var(--scale-factor));
+    margin-top: 4px;
     font-weight: 500;
 }
 
@@ -405,13 +396,13 @@ body {
 }
 
 .diff-info h3 {
-    font-size: calc(16px * var(--scale-factor));
+    font-size: 18px;
     font-weight: 700;
     margin-bottom: 2px;
 }
 
 .diff-info p {
-    font-size: calc(11px * var(--scale-factor));
+    font-size: 12px;
     color: var(--text-secondary);
 }
 
@@ -464,17 +455,17 @@ body {
 }
 
 .badge-category {
-    font-size: calc(12px * var(--scale-factor));
+    font-size: 14px;
     font-weight: 700;
     color: white;
     background: var(--grad-primary);
-    padding: calc(2px * var(--scale-factor)) calc(8px * var(--scale-factor));
+    padding: 2px 10px;
     border-radius: 8px;
     display: inline-block;
 }
 
 .difficulty-indicator {
-    font-size: calc(10px * var(--scale-factor));
+    font-size: 11px;
     color: var(--text-secondary);
     font-weight: 600;
     margin-top: 1px;
@@ -488,9 +479,9 @@ body {
 .timer-container, .score-container {
     background: var(--card-bg);
     border: 1px solid var(--glass-border);
-    padding: calc(6px * var(--scale-factor)) calc(10px * var(--scale-factor));
+    padding: 6px 12px;
     border-radius: 12px;
-    font-size: calc(12px * var(--scale-factor));
+    font-size: 14px;
     font-weight: 700;
     display: flex;
     align-items: center;
@@ -594,22 +585,22 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: calc(12px * var(--scale-factor));
+    font-size: 13px;
     font-weight: 700;
     color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     border-bottom: 1px solid var(--glass-border);
-    padding-bottom: calc(6px * var(--scale-factor));
+    padding-bottom: 6px;
 }
 
 .btn-hint {
     background: rgba(251, 191, 36, 0.15);
     border: 1px solid rgba(251, 191, 36, 0.3);
     color: #fbbf24;
-    padding: calc(4px * var(--scale-factor)) calc(8px * var(--scale-factor));
+    padding: 4px 10px;
     border-radius: 8px;
-    font-size: calc(10px * var(--scale-factor));
+    font-size: 11px;
     font-weight: 700;
     cursor: pointer;
     font-family: var(--font-main);
@@ -632,12 +623,12 @@ body {
 }
 
 .word-item {
-    font-size: calc(11px * var(--scale-factor));
+    font-size: 12px;
     font-weight: 600;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.05);
     color: var(--text-primary);
-    padding: calc(4px * var(--scale-factor)) calc(8px * var(--scale-factor));
+    padding: 4px 10px;
     border-radius: 8px;
     transition: var(--transition-smooth);
 }
@@ -671,18 +662,18 @@ body {
 }
 
 .setting-text h3 {
-    font-size: calc(15px * var(--scale-factor));
+    font-size: 16px;
     font-weight: 700;
     margin-bottom: 2px;
 }
 
 .setting-text p {
-    font-size: calc(10px * var(--scale-factor));
+    font-size: 11px;
     color: var(--text-secondary);
 }
 
 .setting-value {
-    font-size: calc(13px * var(--scale-factor));
+    font-size: 14px;
     font-weight: 700;
     color: var(--color-secondary);
 }
@@ -800,25 +791,25 @@ input:checked + .slider:before {
 }
 
 .medal-icon {
-    font-size: calc(48px * var(--scale-factor));
+    font-size: 56px;
     filter: drop-shadow(0 0 12px rgba(251, 191, 36, 0.5));
     animation: rotatePulse 3s infinite;
 }
 
 .modal-header h2 {
-    font-size: calc(22px * var(--scale-factor));
+    font-size: 24px;
     font-weight: 800;
-    margin-top: calc(8px * var(--scale-factor));
+    margin-top: 8px;
     background: var(--grad-gold);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
 .congrats-text {
-    font-size: calc(12px * var(--scale-factor));
+    font-size: 13px;
     color: var(--text-secondary);
-    margin-top: calc(4px * var(--scale-factor));
-    margin-bottom: calc(16px * var(--scale-factor));
+    margin-top: 4px;
+    margin-bottom: 20px;
 }
 
 .victory-stats {
@@ -833,22 +824,22 @@ input:checked + .slider:before {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid var(--glass-border);
     border-radius: 16px;
-    padding: calc(10px * var(--scale-factor)) calc(6px * var(--scale-factor));
+    padding: 12px 6px;
 }
 
 .v-val {
     display: block;
-    font-size: calc(16px * var(--scale-factor));
+    font-size: 18px;
     font-weight: 800;
     color: var(--color-secondary);
 }
 
 .v-lbl {
-    font-size: calc(9px * var(--scale-factor));
+    font-size: 10px;
     color: var(--text-secondary);
     text-transform: uppercase;
     font-weight: 600;
-    margin-top: calc(2px * var(--scale-factor));
+    margin-top: 2px;
 }
 
 .modal-footer {
@@ -899,43 +890,4 @@ input:checked + .slider:before {
 }
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.25);
-}
-
-/* ==========================================================================
-   RESPONSIVE DESIGN - ADAPTIVE SCALING
-   ========================================================================== */
-
-/* Screens with viewport height <= 600px (e.g., small phones) */
-@media (max-height: 600px) {
-    :root {
-        --scale-factor: 0.8;
-    }
-}
-
-/* Standard mobile screens (600px to 799px) */
-@media (min-height: 600px) and (max-height: 799px) {
-    :root {
-        --scale-factor: 0.9;
-    }
-}
-
-/* Larger phones/tablets (800px to 959px) */
-@media (min-height: 800px) and (max-height: 959px) {
-    :root {
-        --scale-factor: 1;
-    }
-}
-
-/* Desktop/tablet (960px and above) */
-@media (min-height: 960px) {
-    :root {
-        --scale-factor: 0.85;
-    }
-}
-
-/* Extra large screens */
-@media (min-height: 1200px) {
-    :root {
-        --scale-factor: 0.9;
-    }
 }
